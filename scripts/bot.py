@@ -8,7 +8,7 @@ import configparser
 from multiprocessing import Process
 
 config = configparser.ConfigParser()
-config.read('/etc/ocserv/bot.conf')
+config.read('/etc/ocserv/perm/bot.conf')
 
 URL = "https://api.telegram.org/bot{}/".format(config.get('General', 'token'))
 RIGHT_CHAT = config.getint('General', 'chat_id')
@@ -85,7 +85,7 @@ def parser(updates):
                         username = quote(bot_command[1])
                         password = secrets.token_urlsafe(16)
                         myenv = {"USER_PASS": password}
-                        myshell = '''ocpasswd -c /etc/ocserv/vpn.passwd {} <<!
+                        myshell = '''ocpasswd -c /etc/ocserv/perm/vpn.passwd {} <<!
 $USER_PASS
 $USER_PASS
 !'''.format(username)
@@ -102,7 +102,7 @@ $USER_PASS
                         send_message(msg, RIGHT_CHAT)
 
                 elif bot_command[0] == "/list" and len(bot_command) == 1:
-                    f = open("/etc/ocserv/vpn.passwd", "r")
+                    f = open("/etc/ocserv/perm/vpn.passwd", "r")
                     print(f.read())
                     msg = '''List
 ```
@@ -129,4 +129,5 @@ def main():
 if __name__ == '__main__':
     ocserv = Process(target=run_ocserv, daemon=True)
     ocserv.start()
+    ocserv.join()
     main()
