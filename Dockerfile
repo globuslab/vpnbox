@@ -4,7 +4,9 @@ LABEL author = "Globuslab"
 RUN dnf install -y epel-release
 RUN dnf repolist enabled
 RUN dnf install -y ocserv
-RUN yum install gnutls-utils
+RUN dnf install -y gnutls-utils
+RUN dnf install -y python3-pip
+RUN /usr/bin/python3 -m pip install requests
 COPY ./configs /etc/ocserv
 COPY ./certs/server-cert.pem /etc/ocserv/server-cert.pem
 COPY ./certs/server-key.pem /etc/ocserv/server-key.pem
