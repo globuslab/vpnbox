@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: almalinux-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: |
+        MYTIME=$(date +%s)
+        docker build . --file Dockerfile --tag vpnbox-main:$MYTIME
+        docker save -o vpnbox-main vpnbox-main:$MYTIME
+        
+    - uses: actions/upload-artifact@v4
+    - name: Upload the Docker image
+      with:
+        name: vpnbox-main
+        path: ./vpnbox-main
+
+
+
+          
