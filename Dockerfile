@@ -6,9 +6,9 @@ RUN dnf repolist enabled
 RUN dnf install -y ocserv
 RUN yum install gnutls-utils
 COPY ./configs /etc/ocserv
-COPY ./certs /etc/ocserv/certs
+COPY ./certs/server-cert.pem /etc/ocserv/server-cert.pem
+COPY ./certs/server-key.pem /etc/ocserv/server-key.pem
 COPY ./scripts/bot.py /etc/ocserv/bot.py
-RUN cp /etc/ocserv/certs/server-*.pem /etc/ocserv/
 #RUN certtool --generate-privkey --outfile /etc/ocserv/ca-key.pem
 #RUN certtool --generate-self-signed --load-privkey /etc/ocserv/ca-key.pem --template /etc/ocserv/certs/ca.tmpl --outfile  /etc/ocserv/ca-cert.pem
 #RUN certtool --generate-privkey --outfile /etc/ocserv/server-key.pem
