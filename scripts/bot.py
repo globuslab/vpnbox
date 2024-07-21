@@ -4,18 +4,22 @@ import requests
 import urllib
 import secrets
 from shlex import quote
+import configparser
+from multiprocessing import Process
 
-TOKEN = ""
-URL = "https://api.telegram.org/bot{}/".format(TOKEN)
-USERNAME_BOT = "pivpn"
-RIGHT_CHAT = 
+config = configparser.ConfigParser()
+config.read('/etc/ocserv/bot.conf')
 
+URL = "https://api.telegram.org/bot{}/".format(config.get('General', 'token'))
+RIGHT_CHAT = config.get('General', 'chat_id')
+BOT_NAME = config.get('General', 'bot_name')
+
+del config
 
 def get_url(url):
     response = requests.get(url)
     content = response.content.decode("utf8")
     return content
-
 
 def get_json_from_url(url):
     content = get_url(url)
@@ -98,18 +102,20 @@ $USER_PASS
                         send_message(msg, RIGHT_CHAT)
 
                 elif bot_command[0] == "/list" and len(bot_command) == 1:
-                    myshell = "cat /etc/ocserv/vpn.passwd | awk -F':' '{print $1}'"
-                    text = subprocess.Popen(myshell, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    utext, rtext = text.communicate()
+                    f = open("demofile.txt", "r")
+                    print(f.read())
                     msg = '''List
 ```
 {}
-```'''.format(utext)
+```'''.format(f.read())
                     send_message(msg, RIGHT_CHAT)
 
                 else:
                     send_message("Don't understand", RIGHT_CHAT)
 
+def run_ocserv():
+    myshell = "ocserv -f -c /etc/ocserv/ocserv.conf"
+    subprocess.Popen(myshell, shell=True)
 
 def main():
     last_update_id = None
@@ -121,4 +127,6 @@ def main():
                 parser(updates)
 
 if __name__ == '__main__':
+    ocserv = Process(target=run_ocserv, daemon=True)
+    ocserv.start()
     main()
