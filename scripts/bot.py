@@ -102,7 +102,7 @@ $USER_PASS
                         send_message(msg, RIGHT_CHAT)
 
                 elif bot_command[0] == "/list" and len(bot_command) == 1:
-                    f = open("demofile.txt", "r")
+                    f = open("/etc/ocserv/vpn.passwd", "r")
                     print(f.read())
                     msg = '''List
 ```
