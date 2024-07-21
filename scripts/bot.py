@@ -11,7 +11,7 @@ config = configparser.ConfigParser()
 config.read('/etc/ocserv/bot.conf')
 
 URL = "https://api.telegram.org/bot{}/".format(config.get('General', 'token'))
-RIGHT_CHAT = config.get('General', 'chat_id')
+RIGHT_CHAT = config.getint('General', 'chat_id')
 BOT_NAME = config.get('General', 'bot_name')
 
 del config
