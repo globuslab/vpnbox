@@ -13,8 +13,7 @@ docker run --name vpnbox --privileged -d --restart always -p 4443:443 --mount ty
 
 # Update
 
-docker stop vpnbox 
-docker rm vpnbox
+docker rm -f vpnbox
 docker pull ghcr.io/globuslab/vpnbox:latest
 
-docker run --name vpnbox --privileged -d --restart always -p 4443:443 --mount type=bind,source=/root/bot.conf,target=/etc/ocserv/bot.conf,readonly --mount type=bind,source=/root/vpn.passwd,target=/etc/ocserv/vpn.passwd  ghcr.io/globuslab/vpnbox:latest
+Run like new 
