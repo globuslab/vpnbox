@@ -14,5 +14,5 @@ COPY ./scripts/bot.py /etc/ocserv/bot.py
 #RUN certtool --generate-privkey --outfile /etc/ocserv/server-key.pem
 #RUN certtool --generate-certificate --load-privkey /etc/ocserv/server-key.pem --load-ca-certificate /etc/ocserv/ca-cert.pem --load-ca-privkey /etc/ocserv/ca-key.pem --template /etc/ocserv/certs/server.tmpl --outfile /etc/ocserv/server-cert.pem
 RUN chown -R ocserv /etc/ocserv
-CMD ["python3 /etc/ocserv/bot.py"]
+CMD ["/usr/bin/python3", "/etc/ocserv/bot.py"]
 EXPOSE 443
